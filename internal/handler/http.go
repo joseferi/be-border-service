@@ -15,8 +15,9 @@ func HttpRequest(request *http.Request, svc usecase.UseCase, conf *config.Config
 	req := request.WithContext(ctx)
 
 	data := &common.Data{
-		Request: req,
-		Config:  conf,
+		Request:     req,
+		ServiceType: "http",
+		Config:      conf,
 	}
 
 	return svc.Serve(data)

@@ -24,7 +24,7 @@ func NewHTTPServer(cfg *config.Config) Server {
 	return &httpServer{
 		AppName: cfg.Server.Name,
 		AppPort: cfg.Server.Port,
-		router:  routes.NewRouter(),
+		router:  routes.NewRouter(cfg),
 		config:  cfg,
 	}
 }

@@ -1,7 +1,16 @@
 services:
+  be-border-service:
+    build:
+      context: ../
+      dockerfile: deployment/Dockerfile
+    container_name: be-border-service
+    ports:
+      - "8080:3001"
+    network_mode: host    
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
+    restart: unless-stopped
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "Akuntest1!"

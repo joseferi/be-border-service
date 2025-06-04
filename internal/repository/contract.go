@@ -15,22 +15,22 @@ type CustomerRepository interface {
 
 // Create
 type CreateCustomer interface {
-	Create(ctx context.Context, customer *model.Customer) error
+	Create(ctx context.Context, customer model.Users) error
 }
 
 // Read (Find All)
 type FindAllCustomer interface {
-	FindAll(ctx context.Context) ([]model.Customer, error)
+	FindAll(ctx context.Context) ([]model.Users, error)
 }
 
 // Read (Find One)
 type FindOneCustomer interface {
-	FindOne(ctx context.Context, customer *model.Customer) (*model.Customer, error)
+	FindOne(ctx context.Context, customer model.Users) (*model.Users, error)
 }
 
 // Update
 type UpdateCustomer interface {
-	Update(ctx context.Context, customer *model.Customer) error
+	Update(ctx context.Context, customer model.Users) error
 }
 
 // Delete

@@ -132,5 +132,5 @@ func Fatal(msg string, fl ...Field) {
 		logging.Desugar().WithOptions(zap.AddCallerSkip(1)).Sugar().Error(msg)
 		return
 	}
-	logging.Desugar().WithOptions(zap.AddCallerSkip(1)).Sugar().Warnw(msg, extract(fl...)...)
+	logging.Desugar().WithOptions(zap.AddCallerSkip(1)).Sugar().Fatalw(msg, extract(fl...)...)
 }

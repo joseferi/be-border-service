@@ -1,12 +1,15 @@
 package routes
 
 import (
+	"be-border-service/internal/bootstrap"
 	"be-border-service/internal/common"
 	"be-border-service/internal/config"
 	"be-border-service/internal/constants"
 	"be-border-service/internal/handler"
 	"be-border-service/internal/middleware"
+	"be-border-service/internal/repository"
 	"be-border-service/internal/usecase"
+	"be-border-service/internal/usecase/customers"
 	"be-border-service/pkg/logger"
 	"encoding/json"
 	"fmt"
@@ -21,9 +24,10 @@ type router struct {
 	config *config.Config
 }
 
-func NewRouter() Router {
+func NewRouter(cfg *config.Config) Router {
 	return &router{
 		Router: mux.NewRouter(),
+		config: cfg,
 	}
 }
 func (rtr *router) handle(hfn httpHandlerFunc, svc usecase.UseCase, mdws ...middleware.MiddlewareFunc) http.HandlerFunc {
@@ -65,12 +69,33 @@ func (rtr *router) response(w http.ResponseWriter, resp common.Response) {
 
 func (r *router) Route() *router {
 	r.Router.NotFoundHandler = http.HandlerFunc(middleware.NotFound)
+	db := bootstrap.RegistryDatabase(&r.config.DB)
+
+	root := r.Router.PathPrefix("/").Subrouter()
+	v1 := root.PathPrefix("/v1").Subrouter()
+
+	// initialize repo
+	customerRepo := repository.NewCustomerRepository(db)
+
+	// initialize usecase
+	createCustomer := customers.NewCreateCustomerUseCase(customerRepo, customerRepo)
+	retrieveCustomer := customers.NewRetrieveCustomerUseCase(customerRepo)
 
 	healthCheck := usecase.NewHealthCheck()
 
 	r.HandleFunc("/healthcheck", r.handle(
 		handler.HttpRequest,
 		healthCheck,
+	)).Methods(http.MethodGet)
+
+	v1.HandleFunc("/customer", r.handle(
+		handler.HttpRequest,
+		createCustomer,
+	)).Methods(http.MethodPost)
+
+	v1.HandleFunc("/customer", r.handle(
+		handler.HttpRequest,
+		retrieveCustomer,
 	)).Methods(http.MethodGet)
 	return r
 }

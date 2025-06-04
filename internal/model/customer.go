@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-type Customer struct {
+type Users struct {
 	ID        int       `db:"id"`
 	Name      string    `db:"name"`
 	Email     string    `db:"email"`

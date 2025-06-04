@@ -2,12 +2,12 @@ package databasex
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"net/url"
 	"time"
 
 	_ "github.com/denisenkom/go-mssqldb"
+	"github.com/jmoiron/sqlx"
 )
 
 const (
@@ -32,8 +32,9 @@ func mssqlDSN(cfg *Config) string {
 	}
 	return dsn
 }
-func NewMssql(cfg *Config) (*sql.DB, error) {
-	db, err := sql.Open(cfg.Driver, mssqlDSN(cfg))
+func NewMssql(cfg *Config) (*sqlx.DB, error) {
+
+	db, err := sqlx.Open(cfg.Driver, mssqlDSN(cfg))
 	if err != nil {
 		return nil, err
 	}

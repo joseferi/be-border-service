@@ -28,16 +28,22 @@ func NewResponse() *Response {
 	return &x
 }
 
-func (r *Response) WithStatusCode(statusCode int) *Response {
-	r.Status = statusCode
-	return r
-}
 func (r *Response) WithMessage(message string) *Response {
 	r.Message = message
 	return r
 }
 func (r *Response) WithData(data any) *Response {
 	r.Data = data
+	return r
+}
+
+func (r *Response) WithError(err any) *Response {
+	r.Errors = err
+	return r
+}
+
+func (r *Response) WithStatusCode(statusCode int) *Response {
+	r.Status = statusCode
 	return r
 }
 func (r *Response) Byte() []byte {
