@@ -33,7 +33,9 @@ func (rc *retrieveCustomerUCase) Serve(r *common.Data) common.Response {
 	if err := r.Cast(&params); err != nil {
 		return *common.NewResponse().WithStatusCode(http.StatusBadRequest).WithMessage("invalid request")
 	}
+
 	lf.Append(logger.Any("params", params))
+
 	customers, err := rc.repo.FindAll(ctx)
 	if err != nil {
 		logger.Error(fmt.Sprintf("error find all customers, got err :%v", err), lf...)

@@ -13,7 +13,7 @@ func NewHealthCheck() UseCase {
 	return &healthCheckService{}
 }
 
-func (u *healthCheckService) Serve(data *common.Data) common.Response {
+func (u *healthCheckService) Serve(_ *common.Data) common.Response {
 	logger.Info("Success health check")
 	return *common.NewResponse().WithStatusCode(http.StatusOK).WithMessage("Ok")
 }

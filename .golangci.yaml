@@ -9,13 +9,13 @@ linters:
     - bodyclose
     - revive
     - misspell
-    - depguard
     - nestif    
     - dupl
   settings:
     revive:
       severity: warning
       rules:
+        - name: comment-spacings
         - name: indent-error-flow
         - name: var-naming
         - name: unused-parameter

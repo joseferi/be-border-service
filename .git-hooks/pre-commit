@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "🔍 Running golangci-lint... broomm!!"
+echo "🔍 Running golangci-lint... 🏍 broomm!! "
 
 golangci-lint run ./internal/usecase
 STATUS=$?
