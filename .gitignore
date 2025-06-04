@@ -1,0 +1,7 @@
+/vendor
+.env
+.dockerignore
+.idea/*
+logs/*
+.DS_Store
+/tmp
