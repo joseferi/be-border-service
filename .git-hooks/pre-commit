@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo "🔍 Running golangci-lint... broomm!!"
+
+golangci-lint run ./internal/usecase
+STATUS=$?
+
+if [ $STATUS -ne 0 ]; then
+  echo "❌ Linter failed. Commit aborted."
+  exit 1
+fi
+
+echo "✅ Linter passed. Proceeding with commit."
+exit 0

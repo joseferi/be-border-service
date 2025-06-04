@@ -3,11 +3,8 @@ start:
 	@go run main.go http
 install:
 	@echo "Installing ..."
-	@go mod tidy && go mod vendor
+	@go mod tidy && go mod vendor && git config core.hooksPath .git-hooks
 	
 clean:
 	@echo "Cleaning"
 	@rm -rf vendor
-
-run-lint:
-	@golangci-lint run internal/usecase
