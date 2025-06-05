@@ -8,3 +8,8 @@ install:
 clean:
 	@echo "Cleaning"
 	@rm -rf vendor
+
+test:
+	@go test internal/... -v -cover -coverprofile=coverage.out
+view-test:
+	@go tool cover -html=coverage.out -o coverage.html

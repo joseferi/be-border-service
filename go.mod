@@ -7,6 +7,7 @@ require (
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/gorilla/mux v1.8.1
 	github.com/gorilla/schema v1.4.1
+	github.com/hibiken/asynq v0.25.1
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/pressly/goose/v3 v3.24.3
@@ -16,6 +17,8 @@ require (
 )
 
 require (
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
@@ -23,10 +26,13 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
+	github.com/redis/go-redis/v9 v9.7.0 // indirect
+	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/sagikazarmark/locafero v0.7.0 // indirect
 	github.com/sethvargo/go-retry v0.3.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
@@ -40,5 +46,7 @@ require (
 	golang.org/x/sync v0.14.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.25.0 // indirect
+	golang.org/x/time v0.8.0 // indirect
+	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
