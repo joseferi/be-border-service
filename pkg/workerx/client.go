@@ -2,6 +2,9 @@ package workerx
 
 import (
 	"be-border-service/internal/config"
+	"be-border-service/internal/constants"
+	"encoding/json"
+	"fmt"
 
 	"github.com/hibiken/asynq"
 )
@@ -19,6 +22,18 @@ func NewAsynqClient(cfg *config.Config) AsynqClient {
 		WriteTimeout: cfg.Redis.WriteTimeout,
 		ReadTimeout:  cfg.Redis.ReadTimeout,
 	}
+}
+func NewTask(taskType string, payload any) (*asynq.Task, error) {
+	if _, ok := constants.AllowedTaskTypes[taskType]; !ok {
+		return nil, fmt.Errorf("invalid task type: %s", taskType)
+	}
+
+	b, err := json.Marshal(payload)
+	if err != nil {
+		return nil, err
+	}
+
+	return asynq.NewTask(taskType, b), nil
 }
 
 func (a *asynqServerConfig) Enqueue(task *asynq.Task, opts ...EnqueueOptions) (*asynq.TaskInfo, error) {

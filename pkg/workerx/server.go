@@ -8,7 +8,8 @@ import (
 )
 
 type Asynqx interface {
-	Run(asynq.Handler) error
+	Register(pattern string, handler asynq.Handler)
+	Run() error
 }
 
 type asynqServerConfig struct {
@@ -16,34 +17,38 @@ type asynqServerConfig struct {
 	DB                            int
 	WriteTimeout, ReadTimeout     time.Duration
 	Concurrency                   int
+	asynqServer                   *asynq.Server
+	mux                           *asynq.ServeMux
 }
 
 func NewAsynqserver(config *config.Config) Asynqx {
-	return &asynqServerConfig{
-		RedisAddr:    config.Redis.Addr,
-		username:     config.Redis.Username,
-		password:     config.Redis.Password,
+	srv := asynq.NewServer(asynq.RedisClientOpt{
+		Addr:         config.Redis.Addr,
+		Username:     config.Redis.Username,
+		Password:     config.Redis.Password,
+		DB:           config.Redis.DB,
 		ReadTimeout:  config.Redis.ReadTimeout,
 		WriteTimeout: config.Redis.WriteTimeout,
-		Concurrency:  config.Asynq.Concurrency,
-	}
-}
-
-func (a *asynqServerConfig) Run(h asynq.Handler) error {
-	srv := asynq.NewServer(asynq.RedisClientOpt{
-		Addr:         a.RedisAddr,
-		Username:     a.username,
-		Password:     a.password,
-		DB:           a.DB,
-		ReadTimeout:  a.ReadTimeout,
-		WriteTimeout: a.WriteTimeout,
 	}, asynq.Config{
-		Concurrency: a.Concurrency,
+		Concurrency: config.Asynq.Concurrency,
 		Queues: map[string]int{
 			"critical": 6,
 			"default":  3,
 			"low":      1,
 		},
 	})
-	return srv.Run(h)
+	mux := asynq.NewServeMux()
+
+	return &asynqServerConfig{
+		mux:         mux,
+		asynqServer: srv,
+	}
+
+}
+func (s *asynqServerConfig) Run() error {
+	return s.asynqServer.Run(s.mux)
+}
+
+func (s *asynqServerConfig) Register(pattern string, handler asynq.Handler) {
+	s.mux.Handle(pattern, handler)
 }

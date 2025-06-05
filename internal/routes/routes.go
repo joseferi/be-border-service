@@ -85,7 +85,7 @@ func (r *router) Route() *router {
 	createCustomer := customers.NewCreateCustomerUseCase(customerRepo, customerRepo, workerClient)
 	retrieveCustomer := customers.NewRetrieveCustomerUseCase(customerRepo)
 
-	healthCheck := usecase.NewHealthCheck()
+	healthCheck := usecase.NewHealthCheck(workerClient)
 
 	r.HandleFunc("/healthcheck", r.handle(
 		handler.HttpRequest,

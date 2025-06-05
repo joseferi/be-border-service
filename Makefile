@@ -9,6 +9,9 @@ clean:
 	@echo "Cleaning"
 	@rm -rf vendor
 
+run-jobs:
+	@go run main.go run:workers:server
+
 test:
 	@go test internal/... -v -cover -coverprofile=coverage.out
 view-test:

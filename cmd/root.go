@@ -4,6 +4,8 @@ import (
 	"be-border-service/cmd/migration"
 	"be-border-service/cmd/server"
 	workerserver "be-border-service/cmd/worker_server"
+	"be-border-service/internal/config"
+	"be-border-service/pkg/logger"
 	"context"
 	"log"
 	"os"
@@ -14,6 +16,8 @@ import (
 )
 
 func Start() {
+	cfg := config.RegisterConfiguration()
+	logger.Setup(cfg.Server.Env)
 	rootCmd := &cobra.Command{}
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -30,7 +34,7 @@ func Start() {
 			Use:   "http",
 			Short: "Run HTTP Server",
 			Run: func(cmd *cobra.Command, args []string) {
-				server.Start(ctx)
+				server.Start(ctx, &cfg)
 			},
 		},
 		{
@@ -44,7 +48,7 @@ func Start() {
 			Use:   "run:workers:server",
 			Short: "Runing background jobs ...",
 			Run: func(cmd *cobra.Command, args []string) {
-				workerserver.Start()
+				workerserver.Start(&cfg)
 			},
 		},
 	}

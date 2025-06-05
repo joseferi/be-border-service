@@ -9,10 +9,9 @@ import (
 	"fmt"
 )
 
-func Start(ctx context.Context) {
-	config := config.RegisterConfiguration()
-	logger.Setup(config.Server.Env)
-	serve := server.NewHTTPServer(&config)
+func Start(ctx context.Context, config *config.Config) {
+
+	serve := server.NewHTTPServer(config)
 
 	defer serve.Done()
 	logger.Info(fmt.Sprintf("starting [%s] services ... %d", config.Server.Name, config.Server.Port),

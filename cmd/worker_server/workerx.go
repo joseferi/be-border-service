@@ -3,19 +3,33 @@ package workerserver
 import (
 	"be-border-service/internal/config"
 	"be-border-service/internal/constants"
+	"be-border-service/internal/handler/tasks"
 	"be-border-service/pkg/logger"
 	"be-border-service/pkg/workerx"
 	"fmt"
-
-	"github.com/hibiken/asynq"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
-func Start() {
-	config := config.RegisterConfiguration()
+func Start(config *config.Config) {
 
-	srv := workerx.NewAsynqserver(&config)
+	srv := workerx.NewAsynqserver(config)
 
-	if err := srv.Run(asynq.NewServeMux()); err != nil {
-		logger.Warn(fmt.Sprintf("worker asynq error, err: %s", err.Error()), logger.EventName(constants.WorkerStarting))
-	}
+	// Register handlers
+	srv.Register(constants.TaskHealthCheck, tasks.HealthCheckHandler())
+
+	// Graceful shutdown support
+	logger.Info("[🚀] Asynq Server starting ....")
+	go func() {
+		if err := srv.Run(); err != nil {
+			logger.Fatal(fmt.Sprintf("Asynq server error :%v", err), logger.EventName(constants.WorkerStarting))
+		}
+	}()
+
+	// Wait for shutdown signal
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
+	<-stop
+	logger.Info("[Asynq Server] Shutting down...")
 }
