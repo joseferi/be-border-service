@@ -6,7 +6,7 @@ services:
     container_name: be-border-service
     ports:
       - "8080:3001"
-    network_mode: host    
+    network_mode: host
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
@@ -21,6 +21,11 @@ services:
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer-dashboard
+    depends_on:
+      - sqlserver
+      - be-border-service
+      - redis-insight
+      - redis
     ports:
       - 9443:9443
     volumes:
@@ -32,9 +37,24 @@ services:
     image: redis/redisinsight:latest
     container_name: redis-insight
     restart: unless-stopped
+    depends_on:
+      - redis
     ports:
       - 5540:5540
     volumes:
       - redis_insight:/data
+  redis:
+    image: redis:8.0.2
+    container_name: redis
+    ports:
+      - 6379:6379
+    command: ["redis-server"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+    volumes:
+      - redis_data:/data
 volumes:
   sqlserverdata:
+  redis_data:
+  portainer_data:
+  redis_insight:
