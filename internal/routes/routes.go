@@ -90,6 +90,7 @@ func (r *router) Route() *router {
 	r.HandleFunc("/healthcheck", r.handle(
 		handler.HttpRequest,
 		healthCheck,
+		middleware.HealthCheckMiddleware(),
 	)).Methods(http.MethodGet)
 
 	v1.HandleFunc("/customer", r.handle(
