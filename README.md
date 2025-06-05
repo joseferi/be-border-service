@@ -33,7 +33,8 @@ This boilerplate is designed to help developers get started quickly with native 
   - `common/`: Common function reusable, like base response, encrypting, base64, etc.
   - `config/`: Define struct of file configuration.
   - `delivery/`: Define struct of params from request incoming like payload or query params.
-  - `handler/`: Wrapping http method or another protocol like grpc or MQ.
+  - `handler/http.go`: Wrapping http method or another protocol like grpc or MQ.
+    - `handler/tasks/`: handler process queue do.
   - `middleware/`: middlewares file.
   - `model/`: Representation attribute table from database.
   - `providers/`: Define thirdparty function, like sendgrid mail, payment-gateway or another service dependency.
