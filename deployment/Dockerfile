@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-from golang:1.24-alpine as builder
+FROM golang:1.24-alpine as builder
 
 RUN mkdir -p /app
 WORKDIR /app
@@ -24,4 +24,4 @@ COPY --from=builder /app/myapp .
 RUN apk --no-cache add ca-certificates tzdata
 
 # Set the entrypoint command
-ENTRYPOINT ["/app/myapp"]
+CMD ["sh", "-c", "/app/myapp http"]

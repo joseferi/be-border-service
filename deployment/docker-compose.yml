@@ -4,9 +4,15 @@ services:
       context: ../
       dockerfile: deployment/Dockerfile
     container_name: be-border-service
+    depends_on:
+      - redis
+      - sqlserver
     ports:
-      - "8080:3001"
-    network_mode: host
+      - "8080:8001"      
+    volumes:
+      - ../.env:/app/.env
+    networks:
+      - internal-net
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
@@ -18,6 +24,8 @@ services:
       - "1433:1433"
     volumes:
       - sqlserverdata:/var/opt/mssql
+    networks:
+      - internal-net
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer-dashboard
@@ -32,6 +40,8 @@ services:
       - portainer_data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
+    networks:
+      - internal-net
 
   redis-insight:
     image: redis/redisinsight:latest
@@ -43,6 +53,8 @@ services:
       - 5540:5540
     volumes:
       - redis_insight:/data
+    networks:
+      - internal-net
   redis:
     image: redis:8.0.2
     container_name: redis
@@ -53,6 +65,11 @@ services:
       test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
     volumes:
       - redis_data:/data
+    networks:
+      - internal-net
+
+networks:
+  internal-net:
 volumes:
   sqlserverdata:
   redis_data:

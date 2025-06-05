@@ -46,7 +46,7 @@ func (h *httpServer) Run(ctx context.Context) error {
 	go func() {
 		err = server.ListenAndServe()
 		if err != http.ErrServerClosed {
-			slog.Error(fmt.Sprintf("http server got %v", err)) // temporary !
+			logger.Error(fmt.Sprintf("error http server closed, got :%v", err))
 		}
 	}()
 
