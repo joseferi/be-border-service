@@ -8,6 +8,7 @@ import (
 	"be-border-service/internal/usecase"
 	"be-border-service/internal/validators"
 	"be-border-service/pkg/logger"
+	"be-border-service/pkg/workerx"
 	"fmt"
 	"net/http"
 
@@ -15,14 +16,17 @@ import (
 )
 
 type customerUseCase struct {
-	find  repository.FindOneCustomer
-	store repository.CreateCustomer
+	find    repository.FindOneCustomer
+	store   repository.CreateCustomer
+	workerx workerx.AsynqClient
 }
 
-func NewCreateCustomerUseCase(findOneCustomer repository.FindOneCustomer, store repository.CreateCustomer) usecase.UseCase {
+func NewCreateCustomerUseCase(findOneCustomer repository.FindOneCustomer,
+	store repository.CreateCustomer, workerClient workerx.AsynqClient) usecase.UseCase {
 	return &customerUseCase{
-		find:  findOneCustomer,
-		store: store,
+		find:    findOneCustomer,
+		store:   store,
+		workerx: workerClient,
 	}
 }
 
@@ -69,6 +73,11 @@ func (c *customerUseCase) Serve(r *common.Data) common.Response {
 		logger.Error(fmt.Sprintf("error store customer got err :%v", err), lf...)
 		return *common.NewResponse().WithStatusCode(http.StatusInternalServerError).WithMessage("something went wrong")
 	}
+
+	/*
+		go c.workerx.Enqueue(asynq.NewTask("test", nil), workerx.WithMaxRetry(1))
+	*/
+
 	logger.Info("success create customer", lf...)
 	return *common.NewResponse().WithStatusCode(http.StatusOK).WithMessage("ok")
 }

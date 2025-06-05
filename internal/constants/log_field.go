@@ -5,4 +5,5 @@ const (
 	LogEventNameServiceTerminated = "ServiceTerminated"
 	//LogEventNameServiceStarting const
 	LogEventNameServiceStarting = "ServiceStarting"
+	WorkerStarting              = "AsynqStarting"
 )

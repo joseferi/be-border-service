@@ -11,6 +11,7 @@ import (
 	"be-border-service/internal/usecase"
 	"be-border-service/internal/usecase/customers"
 	"be-border-service/pkg/logger"
+	"be-border-service/pkg/workerx"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -74,11 +75,14 @@ func (r *router) Route() *router {
 	root := r.Router.PathPrefix("/").Subrouter()
 	v1 := root.PathPrefix("/v1").Subrouter()
 
+	// init workersClient
+	workerClient := workerx.NewAsynqClient(r.config)
+
 	// initialize repo
 	customerRepo := repository.NewCustomerRepository(db)
 
 	// initialize usecase
-	createCustomer := customers.NewCreateCustomerUseCase(customerRepo, customerRepo)
+	createCustomer := customers.NewCreateCustomerUseCase(customerRepo, customerRepo, workerClient)
 	retrieveCustomer := customers.NewRetrieveCustomerUseCase(customerRepo)
 
 	healthCheck := usecase.NewHealthCheck()

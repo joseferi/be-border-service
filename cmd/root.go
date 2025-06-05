@@ -3,6 +3,7 @@ package cmd
 import (
 	"be-border-service/cmd/migration"
 	"be-border-service/cmd/server"
+	workerserver "be-border-service/cmd/worker_server"
 	"context"
 	"log"
 	"os"
@@ -37,6 +38,13 @@ func Start() {
 			Short: "Database migration",
 			Run: func(cmd *cobra.Command, args []string) {
 				migration.MigrationDatabase()
+			},
+		},
+		{
+			Use:   "run:workers:server",
+			Short: "Runing background jobs ...",
+			Run: func(cmd *cobra.Command, args []string) {
+				workerserver.Start()
 			},
 		},
 	}
