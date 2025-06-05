@@ -19,7 +19,14 @@ type asynqServerConfig struct {
 }
 
 func NewAsynqserver(config *config.Config) Asynqx {
-	return &asynqServerConfig{}
+	return &asynqServerConfig{
+		RedisAddr:    config.Redis.Addr,
+		username:     config.Redis.Username,
+		password:     config.Redis.Password,
+		ReadTimeout:  config.Redis.ReadTimeout,
+		WriteTimeout: config.Redis.WriteTimeout,
+		Concurrency:  config.Asynq.Concurrency,
+	}
 }
 
 func (a *asynqServerConfig) Run(h asynq.Handler) error {

@@ -7,14 +7,19 @@ var (
 )
 
 type Config struct {
-	Server Server   `mapstructure:",squash"`
-	DB     Database `mapstructure:",squash"`
+	Server Server      `mapstructure:",squash"`
+	DB     Database    `mapstructure:",squash"`
+	Redis  Redis       `mapstructure:",squash"`
+	Asynq  AsynqServer `mapstructure:",squash"`
 }
 
 type Server struct {
 	Name string `mapstructure:"APP_NAME"`
 	Port int    `mapstructure:"APP_PORT"`
 	Env  string `mapstructure:"APP_ENV"`
+}
+type AsynqServer struct {
+	Concurrency int `mapstructure:"ASYNQ_SERVER_CONCURRENCY"`
 }
 
 type Database struct {
@@ -34,4 +39,13 @@ type Database struct {
 	DialTimeout  time.Duration `mapstructure:"DB_DIAL_TIMEOUT"`
 	ReadTimeout  time.Duration `mapstructure:"DB_READ_TIMEOUT"`
 	WriteTimeout time.Duration `mapstructure:"DB_WRITE_TIMEOUT"`
+}
+
+type Redis struct {
+	Addr         string        `mapstructure:"REDIS_ADDR"`
+	Username     string        `mapstructure:"REDIS_USERNAME"`
+	Password     string        `mapstructure:"REDIS_PASSWORD"`
+	DB           int           `mapstructure:"REDIS_DB"`
+	ReadTimeout  time.Duration `mapstructure:"REDIS_READ_TIMEOUT"`
+	WriteTimeout time.Duration `mapstructure:"REDIS_WRITE_TIMEOUT"`
 }

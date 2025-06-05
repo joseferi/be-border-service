@@ -12,8 +12,12 @@ type AsynqClient interface {
 
 func NewAsynqClient(cfg *config.Config) AsynqClient {
 	return &asynqServerConfig{
-		RedisAddr: "",
-		password:  "user",
+		RedisAddr:    cfg.Redis.Addr,
+		username:     cfg.Redis.Username,
+		password:     cfg.Redis.Password,
+		DB:           cfg.Redis.DB,
+		WriteTimeout: cfg.Redis.WriteTimeout,
+		ReadTimeout:  cfg.Redis.ReadTimeout,
 	}
 }
 
