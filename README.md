@@ -1,8 +1,7 @@
-<div style="text-align: center; font-size:40px; font-weight: bold;">
-    Loyalty GolangKit
-</div>
+# <div align="center">Loyalty Team</div>
 
-
+<div align="center"><img src="image.png"></img></div>
+<!-- ![icon logo](image.png) -->
 
 # 🗺️ Overview
 This boilerplate is designed to help developers get started quickly with native Go http with mux router. It includes basic structure, middleware setup, configuration management, and sample modules.
