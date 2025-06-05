@@ -58,3 +58,11 @@ go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.6
 ```sh
 docker-compose -f deployment/docker-compose.yml up -d
 ```
+
+## 📑 References
+- https://dev.to/kittipat1413/understanding-the-options-pattern-in-go-390c
+- https://github.com/hibiken/asynq/wiki/Getting-Started
+- https://golangci-lint.run/
+- https://github.com/spf13
+- https://refactoring.guru/
+- https://www.conventionalcommits.org/en/v1.0.0/
