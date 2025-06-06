@@ -4,11 +4,19 @@ services:
       context: ../
       dockerfile: deployment/Dockerfile
     container_name: be-border-service
-    depends_on:
-      - redis
-      - sqlserver
     ports:
-      - "8080:8001"      
+      - 8002:8001
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 250M
+        reservations:
+          cpus: "0.25"
+          memory: 100M
+    depends_on:
+      - sqlserver
+      - redis
     volumes:
       - ../.env:/app/.env
     networks:

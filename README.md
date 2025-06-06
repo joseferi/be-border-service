@@ -55,7 +55,16 @@ https://github.com/voidint/g
 go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.6
 ```
 3. Create file ```.env``` on main directory
-4. Build or running service can using docker compose setup.
+4. Install dependencies
+```sh
+make clean && make install
+```
+4. Serve http server
+```sh
+make start
+```
+
+5. Build or running service can using docker compose setup.
 ```sh
 docker-compose -f deployment/docker-compose.yml up -d
 ```
